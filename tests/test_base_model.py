@@ -8,6 +8,7 @@ import unittest
 import models
 from models.base_model import BaseModel
 from datetime import datetime
+from models import storage
 
 
 class TestBaseModel(unittest.TestCase):
@@ -41,6 +42,27 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(model_dict['id'], model.id)
         self.assertEqual(model_dict['created_at'], model.created_at.isoformat())
         self.assertEqual(model_dict['updated_at'], model.updated_at.isoformat())
+
+    def test_save_reload(self):
+        # Create a new BaseModel instance
+        my_model = BaseModel()
+        my_model.name = "My_First_Model"
+        my_model.my_number = 89
+        my_model.save()
+
+        # Check that the object is saved to the file
+        objects_before_reload = storage.all()
+        self.assertTrue(my_model.id in objects_before_reload)
+
+        # Reload the objects from the file
+        storage.reload()
+
+        # Check that the object is reloaded correctly
+        objects_after_reload = storage.all()
+        self.assertTrue(my_model.id in objects_after_reload)
+        reloaded_model = objects_after_reload[my_model.id]
+        self.assertEqual(reloaded_model.name, "My_First_Model")
+        self.assertEqual(reloaded_model.my_number, 89)
 
 if __name__ == '__main__':
     unittest.main()
