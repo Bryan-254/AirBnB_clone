@@ -1,36 +1,38 @@
-#!/usr/bin/env python3
-"""Script for the project console"""
+#!/usr/bin/python3
+"""Console module for the command interpreter."""
 
 import cmd
+from models import storage
 from models.base_model import BaseModel
+from models.user import User
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
+    """Command interpreter class."""
     prompt = "(hbnb) "
 
     def do_create(self, arg):
-        """Creates a new instance of a specified class, saves it, and prints its ID"""
+        """Create new instance, save to JSON file, and print id."""
         if not arg:
             print("** class name missing **")
-        elif arg not in ["BaseModel", "State", "City", "Amenity", "Place", "Review"]:
+        elif arg not in globals():
             print("** class doesn't exist **")
         else:
-            new_instance = eval(arg)()
+            new_instance = globals()[arg]()
             new_instance.save()
             print(new_instance.id)
 
     def do_show(self, arg):
-        """Prints the string representation of an instance based on the class name and id"""
+        """Prints the string representation of an instance."""
         args = arg.split()
         if not arg:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel", "State", "City", "Amenity", "Place", "Review"]:
+        elif args[0] not in globals():
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -43,11 +45,11 @@ class HBNBCommand(cmd.Cmd):
                 print(obj_dict[key])
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id"""
+        """Deletes an instance."""
         args = arg.split()
         if not arg:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel", "State", "City", "Amenity", "Place", "Review"]:
+        elif args[0] not in globals():
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -61,21 +63,22 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
 
     def do_all(self, arg):
-        """Prints all string representations of instances"""
+        """Prints all string representations of instances."""
         obj_dict = storage.all()
         if not arg:
             print([str(obj_dict[obj]) for obj in obj_dict])
-        elif arg not in ["BaseModel", "State", "City", "Amenity", "Place", "Review"]:
+        elif arg not in globals():
             print("** class doesn't exist **")
         else:
-            print([str(obj_dict[obj]) for obj in obj_dict if obj.startswith(arg)])
+            print([str(obj_dict[obj]) for obj in obj_dict
+                  if obj.startswith(arg)])
 
     def do_update(self, arg):
-        """Updates an instance based on the class name and id by adding or updating attribute"""
+        """Updates an instance."""
         args = arg.split()
         if not arg:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel", "State", "City", "Amenity", "Place", "Review"]:
+        elif args[0] not in globals():
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -94,11 +97,11 @@ class HBNBCommand(cmd.Cmd):
                 instance.save()
 
     def emptyline(self):
-        """Do nothing on empty line"""
+        """Do nothing on empty line."""
         pass
 
     def do_EOF(self, line):
-        """Exit the console"""
+        """Exit the console."""
         return True
 
 

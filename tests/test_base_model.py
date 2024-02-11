@@ -40,8 +40,10 @@ class TestBaseModel(unittest.TestCase):
         self.assertIn('updated_at', model_dict)
         self.assertEqual(model_dict['__class__'], 'BaseModel')
         self.assertEqual(model_dict['id'], model.id)
-        self.assertEqual(model_dict['created_at'], model.created_at.isoformat())
-        self.assertEqual(model_dict['updated_at'], model.updated_at.isoformat())
+        self.assertEqual(model_dict['created_at'],
+                         model.created_at.isoformat())
+        self.assertEqual(model_dict['updated_at'],
+                         model.updated_at.isoformat())
 
     def test_save_reload(self):
         # Create a new BaseModel instance
@@ -63,6 +65,7 @@ class TestBaseModel(unittest.TestCase):
         reloaded_model = objects_after_reload[my_model.id]
         self.assertEqual(reloaded_model.name, "My_First_Model")
         self.assertEqual(reloaded_model.my_number, 89)
+
 
 if __name__ == '__main__':
     unittest.main()
