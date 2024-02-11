@@ -3,6 +3,7 @@
 
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
@@ -13,10 +14,10 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id"""
         if not arg:
             print("** class name missing **")
-        elif arg not in globals():
+        elif arg not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
         else:
-            new_instance = globals()[arg]()
+            new_instance = eval(arg)()
             new_instance.save()
             print(new_instance.id)
 
@@ -25,7 +26,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if not arg:
             print("** class name missing **")
-        elif args[0] not in globals():
+        elif args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -42,7 +43,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if not arg:
             print("** class name missing **")
-        elif args[0] not in globals():
+        elif args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -60,7 +61,7 @@ class HBNBCommand(cmd.Cmd):
         obj_dict = storage.all()
         if not arg:
             print([str(obj_dict[obj]) for obj in obj_dict])
-        elif arg not in globals():
+        elif arg not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
         else:
             print([str(obj_dict[obj]) for obj in obj_dict if obj.startswith(arg)])
@@ -70,7 +71,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if not arg:
             print("** class name missing **")
-        elif args[0] not in globals():
+        elif args[0] not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
