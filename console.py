@@ -96,12 +96,18 @@ class HBNBCommand(cmd.Cmd):
                 setattr(instance, args[2], args[3])
                 instance.save()
 
+    def do_EOF(self, line):
+        """EOF command to exit the program"""
+        print("")
+        return True
+
     def emptyline(self):
         """Do nothing on empty line."""
         pass
 
-    def do_EOF(self, line):
-        """Exit the console."""
+    def do_quit(self, arg):
+        """Exit the console and commit all changes"""
+        storage.save()
         return True
 
 

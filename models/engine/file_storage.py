@@ -3,6 +3,7 @@
 
 import json
 from models.base_model import BaseModel
+from models.user import User
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
@@ -11,12 +12,16 @@ from models.review import Review
 
 
 class FileStorage:
-    """Class for serializing and deserializing instances"""
+    """File storage class"""
 
     __file_path = "file.json"
     __objects = {}
-    CLASSES = {"BaseModel": BaseModel, "State": State, "City": City,
-               "Amenity": Amenity, "Place": Place, "Review": Review}
+    CLASSES = {"BaseModel": BaseModel, "User": User, "State": State,
+               "City": City, "Amenity": Amenity, "Place": Place,
+               "Review": Review}
+
+    def __init__(self):
+        pass
 
     def all(self):
         """Returns the dictionary __objects"""
