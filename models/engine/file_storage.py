@@ -3,49 +3,46 @@
 
 import json
 from models.base_model import BaseModel
-from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
 
 class FileStorage:
-    """
-    The file storage handling class
-    """
+    """Class for serializing and deserializing instances"""
+
     __file_path = "file.json"
     __objects = {}
-    CLASSES = {"BaseModel": BaseModel, "User": User}
+    CLASSES = {"BaseModel": BaseModel, "State": State, "City": City,
+               "Amenity": Amenity, "Place": Place, "Review": Review}
 
     def all(self):
-        """Returns the dictionary __objects."""
-        return self.__objects
+        """Returns the dictionary __objects"""
+        return FileStorage.__objects
 
     def new(self, obj):
-        """Sets in __objects the obj with key <obj class name>.id."""
-        key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        self.__objects[key] = obj
+        """Sets in __objects the obj with key <obj class name>.id"""
+        key = obj.__class__.__name__ + "." + obj.id
+        FileStorage.__objects[key] = obj
 
     def save(self):
-        """Serializes __objects to the JSON file."""
+        """Serializes __objects to the JSON file"""
         serialized_objects = {}
-        for key, value in self.__objects.items():
+        for key, value in FileStorage.__objects.items():
             serialized_objects[key] = value.to_dict()
-        with open(self.__file_path, 'w') as file:
+        with open(FileStorage.__file_path, 'w') as file:
             json.dump(serialized_objects, file)
 
     def reload(self):
-        """
-        Deserializes the JSON file to __objects.
-        By importing BaseModel locally within the reload() method,
-        you avoid the circular import issue.
-        """
-        from models.base_model import BaseModel
+        """Deserializes the JSON file to __objects"""
         try:
-            with open(self.__file_path, 'r') as file:
-                loaded_objects = json.load(file)
-                for key, value in loaded_objects.items():
-                    class_name, obj_id = key.split('.')
-                    # Dynamically create instances based on class name
-                    if class_name == "BaseModel":
-                        obj = BaseModel(**value)
-                        self.__objects[key] = obj
-                    # Add more elif statements for other model classes here
+            with open(FileStorage.__file_path, 'r') as file:
+                deserialized_objects = json.load(file)
+            for key, value in deserialized_objects.items():
+                class_name, obj_id = key.split('.')
+                obj = FileStorage.CLASSES[class_name](**value)
+                FileStorage.__objects[key] = obj
         except FileNotFoundError:
             pass

@@ -3,7 +3,11 @@
 
 import cmd
 from models.base_model import BaseModel
-from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage
 
 
@@ -11,10 +15,10 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_create(self, arg):
-        """Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id"""
+        """Creates a new instance of a specified class, saves it, and prints its ID"""
         if not arg:
             print("** class name missing **")
-        elif arg not in ["BaseModel", "User"]:
+        elif arg not in ["BaseModel", "State", "City", "Amenity", "Place", "Review"]:
             print("** class doesn't exist **")
         else:
             new_instance = eval(arg)()
@@ -26,7 +30,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if not arg:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel", "User"]:
+        elif args[0] not in ["BaseModel", "State", "City", "Amenity", "Place", "Review"]:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -39,11 +43,11 @@ class HBNBCommand(cmd.Cmd):
                 print(obj_dict[key])
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id (save the change into the JSON file)"""
+        """Deletes an instance based on the class name and id"""
         args = arg.split()
         if not arg:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel", "User"]:
+        elif args[0] not in ["BaseModel", "State", "City", "Amenity", "Place", "Review"]:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
@@ -57,11 +61,11 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
 
     def do_all(self, arg):
-        """Prints all string representation of all instances based or not on the class name"""
+        """Prints all string representations of instances"""
         obj_dict = storage.all()
         if not arg:
             print([str(obj_dict[obj]) for obj in obj_dict])
-        elif arg not in ["BaseModel", "User"]:
+        elif arg not in ["BaseModel", "State", "City", "Amenity", "Place", "Review"]:
             print("** class doesn't exist **")
         else:
             print([str(obj_dict[obj]) for obj in obj_dict if obj.startswith(arg)])
@@ -71,7 +75,7 @@ class HBNBCommand(cmd.Cmd):
         args = arg.split()
         if not arg:
             print("** class name missing **")
-        elif args[0] not in ["BaseModel", "User"]:
+        elif args[0] not in ["BaseModel", "State", "City", "Amenity", "Place", "Review"]:
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")

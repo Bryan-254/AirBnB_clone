@@ -11,6 +11,7 @@ class TestState(unittest.TestCase):
     def test_attributes(self):
         """Test the attributes of the State class"""
         state = State()
+        self.assertIsInstance(state, State)
         self.assertEqual(state.name, "")
 
 if __name__ == "__main__":
