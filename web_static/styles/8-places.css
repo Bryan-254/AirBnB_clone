@@ -28,6 +28,27 @@
     margin: 0 20px;
 }
 
+.max_guest::before {
+    content: url("../images/icon_group.png");
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.number_rooms::before {
+    content: url("../images/icon_bed.png");
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.number_bathrooms::before {
+    content: url("../images/icon_bath.png");
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
 .user {
     margin-top: 20px;
 }
